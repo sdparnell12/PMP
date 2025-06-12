@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+
+  <title>PepeMiningProtocol</title>
+  <style>
+    /* CSS styles */
+  </style>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+  <div id="app">
+  
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pepe Mining Protocol</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" /> <meta http-equiv="Pragma" content="no-cache" /> <meta http-equiv="Expires" content="0" />
+
+```
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    body {
+        font-family: 'Orbitron', monospace;
+        background: #000;
+        color: #00ffaa;
+        overflow-x: hidden;
+        user-select: none;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .app-container {
+        max-width: 414px;
+        margin: 0 auto;
+        height: 100vh;
+        background: linear-gradient(180deg, #000 0%, #001a0d 100%);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .header {
+        background: linear-gradient(90deg, #001a0d 0%, #003d1a 50%, #001a0d 100%);
+        padding: 15px 20px;
+        text-align: center;
+        border-bottom: 2px solid #00ffaa;
+        box-shadow: 0 2px 10px rgba(0, 255, 170, 0.3);
+    }
+    
+    .app-title {
+        font-size: 18px;
+        font-weight: 900;
+        letter-spacing: 2px;
+        text-shadow: 0 0 10px #00ffaa;
+    }
+    
+    .nav-menu {
+        display: flex;
+        justify-content: space-around;
+        background: #001a0d;
+        padding: 10px 5px;
+        border-bottom: 1px solid #00ffaa;
+    }
+    
+    .nav-btn {
+        background: transparent;
+        border: 1px solid #00ffaa;
+        color: #00ffaa;
+        padding: 8px 12px;
+        font-family: 'Orbitron', monospace;
+        font-size: 10px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        flex: 1;
+        margin: 0 2px;
+    }
+    
+    .nav-btn:hover, .nav-btn.active {
+        background: #00ffaa;
+        color: #000;
+        box-shadow: 0 0 15px rgba(0, 255, 170, 0.5);
+    }
+    
+    .content {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+    }
+    
+    .page {
+        display: none;
+    }
+    
+    .page.active {
+        display: block;
+    }
+    
+    .stats-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .stat-card {
+        background: linear-gradient(135deg, #001a0d 0%, #003d1a 100%);
+        border: 1px solid #00ffaa;
+        padding: 15px;
+        text-align: center;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 255, 170, 0.2);
+    }
+    
+    .stat-value {
+        font-size: 20px;
+        font-weight: 900;
+        margin-bottom: 5px;
+        text-shadow: 0 0 5px #00ffaa;
+    }
+    
+    .stat-label {
+        font-size: 10px;
+        opacity: 0.8;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    .mining-display {
+        background: #001a0d;
+        border: 2px solid #00ffaa;
+        padding: 20px;
+        margin: 20px 0;
+        text-align: center;
+        border-radius: 10px;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .pepe-image {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 15px;
+        background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAiIGhlaWdodD0iODAiIHZpZXdCb3g9IjAgMCA4MCA4MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iNDAiIGN5PSI0MCIgcj0iNDAiIGZpbGw9IiMwMGZmYWEiLz4KPHR5cGU+UEVQRTwvdGV4dD4KPC9zdmc+') center/contain no-repeat;
+        filter: drop-shadow(0 0 10px #00ffaa);
+    }
+    
+    .mining-status {
+        font-size: 14px;
+        margin-bottom: 10px;
+        font-weight: 700;
+    }
+    
+    .progress-bar {
+        width: 100%;
+        height: 8px;
+        background: #003d1a;
+        border-radius: 4px;
+        overflow: hidden;
+        margin: 10px 0;
+    }
+    
+    .progress-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #00ffaa, #00cc88);
+        width: 0%;
+        transition: width 0.5s;
+        box-shadow: 0 0 10px #00ffaa;
+    }
+    
+    .action-btn {
+        background: linear-gradient(90deg, #00ffaa, #00cc88);
+        border: none;
+        color: #000;
+        padding: 15px 30px;
+        font-family: 'Orbitron', monospace;
+        font-size: 12px;
+        font-weight: 900;
+        cursor: pointer;
+        width: 100%;
+        margin: 10px 0;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border-radius: 5px;
+        transition: all 0.3s;
+    }
+    
+    .action-btn:hover {
+        box-shadow: 0 0 20px rgba(0, 255, 170, 0.8);
+        transform: translateY(-2px);
+    }
+    
+    .action-btn:disabled {
+        background: #003d1a;
+        color: #666;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+    
+    .energy-monitor {
+        background: #001a0d;
+        border: 1px solid #00ffaa;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 5px;
+        position: relative;
+    }
+    
+    .energy-readout {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+    
+    .energy-value {
+        font-size: 24px;
+        font-weight: 900;
+        text-shadow: 0 0 5px #00ffaa;
+    }
+    
+    .energy-unit {
+        font-size: 10px;
+        opacity: 0.7;
+    }
+    
+    .biomedical-display {
+        height: 60px;
+        background: #000;
+        border: 1px solid #00ffaa;
+        position: relative;
+        overflow: hidden;
+        border-radius: 3px;
+    }
+    
+    .heartbeat-line {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: #00ffaa;
+        transform: translateY(-50%);
+    }
+    
+    .pulse-dot {
+        position: absolute;
+        width: 6px;
+        height: 6px;
+        background: #00ffaa;
+        border-radius: 50%;
+        top: 50%;
+        transform: translateY(-50%);
+        box-shadow: 0 0 10px #00ffaa;
+        animation: pulse-move 2s linear infinite;
+    }
+    
+    .energy-bars {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        grid-template-rows: repeat(12, 1fr);
+        height: 60px;
+        margin-top: 10px;
+        gap: 1px;
+    }
+    
+    .energy-bar {
+        background: #003d1a;
+        border-radius: 1px;
+        position: relative;
+        overflow: hidden;
+        min-height: 4px;
+    }
+    
+    .energy-bar.active {
+        background: linear-gradient(to top, #00ffaa, #00cc88);
+        box-shadow: 0 0 2px #00ffaa;
+    }
+    
+    .energy-bar.premium {
+        background: linear-gradient(to top, #ffaa00, #ff8800);
+        box-shadow: 0 0 2px #ffaa00;
+    }
+    
+    .energy-bar.active::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, transparent 100%);
+    }
+    
+    .energy-bar.premium::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(to bottom, rgba(255,255,255,0.4) 0%, transparent 100%);
+    }
+    
+    .footer {
+        background: #001a0d;
+        padding: 10px;
+        text-align: center;
+        font-size: 8px;
+        border-top: 1px solid #00ffaa;
+        opacity: 0.6;
+    }
+    
+    .recruit-section {
+        margin: 20px 0;
+    }
+    
+    .invite-code {
+        background: #001a0d;
+        border: 1px solid #00ffaa;
+        padding: 15px;
+        text-align: center;
+        font-family: 'Orbitron', monospace;
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 2px;
+        margin: 10px 0;
+        border-radius: 5px;
+    }
+    
+    .wallet-input {
+        width: 100%;
+        background: #001a0d;
+        border: 1px solid #00ffaa;
+        color: #00ffaa;
+        padding: 12px;
+        font-family: 'Orbitron', monospace;
+        font-size: 12px;
+        margin: 10px 0;
+        border-radius: 5px;
+    }
+    
+    .wallet-input::placeholder {
+        color: #006644;
+    }
+    
+    .balance-display {
+        background: linear-gradient(135deg, #001a0d, #003d1a);
+        border: 2px solid #00ffaa;
+        padding: 25px;
+        text-align: center;
+        margin: 20px 0;
+        border-radius: 10px;
+    }
+    
+    .balance-amount {
+        font-size: 32px;
+        font-weight: 900;
+        text-shadow: 0 0 15px #00ffaa;
+        margin-bottom: 5px;
+    }
+    
+    .timer-display {
+        font-size: 18px;
+        font-weight: 700;
+        color: #00ffaa;
+        text-shadow: 0 0 5px #00ffaa;
+        margin: 10px 0;
+    }
+    
+    .ad-container {
+        background: #001a0d;
+        border: 1px solid #00ffaa;
+        padding: 20px;
+        text-align: center;
+        margin: 20px 0;
+        border-radius: 5px;
+        min-height: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .section-title {
+        font-size: 16px;
+        font-weight: 700;
+        margin: 20px 0 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-shadow: 0 0 5px #00ffaa;
+    }
+    
+    .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #00ffaa;
+        color: #000;
+        padding: 10px 15px;
+        border-radius: 5px;
+        font-weight: 700;
+        font-size: 12px;
+        transform: translateX(300px);
+        transition: transform 0.3s;
+        z-index: 1000;
+    }
+    
+    .notification.show {
+        transform: translateX(0);
+    }
+    
+    @keyframes mining-pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+    }
+    
+    .mining-active .pepe-image {
+        animation: mining-pulse 2s infinite;
+    }
+    
+    .crypto-prices {
+        background: #001a0d;
+        border: 1px solid #00ffaa;
+        padding: 15px;
+        margin: 20px 0;
+        border-radius: 5px;
+    }
+    
+    .price-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px solid #003d1a;
+    }
+    
+    .price-row:last-child {
+        border-bottom: none;
+    }
+    
+    .crypto-symbol {
+        font-weight: 700;
+        font-size: 12px;
+    }
+    
+    .crypto-price {
+        font-weight: 700;
+        font-size: 12px;
+        color: #00ffaa;
+    }
+    
+    .withdrawal-section {
+        background: #001a0d;
+        border: 1px solid #00ffaa;
+        padding: 20px;
+        margin: 20px 0;
+        border-radius: 5px;
+    }
+    
+    .withdrawal-input {
+        width: 100%;
+        background: #000;
+        border: 1px solid #00ffaa;
+        color: #00ffaa;
+        padding: 12px;
+        font-family: 'Orbitron', monospace;
+        font-size: 14px;
+        margin: 10px 0;
+        border-radius: 5px;
+        text-align: center;
+    }
+    
+    .withdrawal-info {
+        font-size: 10px;
+        opacity: 0.8;
+        text-align: center;
+        margin: 10px 0;
+    }
+    
+    .fee-display {
+        background: #003d1a;
+        border: 1px solid #006644;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 3px;
+        font-size: 11px;
+    }
+</style>
+```
+
+</head>
+<body>
+    <div class="app-container">
+        <div class="header">
+            <div class="app-title">PEPE MINING PROTOCOL</div>
+        </div>
+
+```
+    <div class="nav-menu">
+        <button class="nav-btn active" onclick="showPage('mining')">MINE</button>
+        <button class="nav-btn" onclick="showPage('energy')">ENERGY</button>
+        <button class="nav-btn" onclick="showPage('recruit')">RECRUIT</button>
+        <button class="nav-btn" onclick="showPage('wallet')">WALLET</button>
+    </div>
+    
+    <div class="content">
+        <!-- Mining Page -->
+        <div id="mining" class="page active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalPepe">0</div>
+                    <div class="stat-label">TOTAL PEPE</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="hashRate">0.0</div>
+                    <div class="stat-label">TH/s HASH RATE</div>
+                </div>
+            </div>
+            
+            <div class="mining-display" id="miningDisplay">
+                <div class="pepe-image"></div>
+                <div class="mining-status" id="miningStatus">READY TO MINE</div>
+                <div class="timer-display" id="miningTimer">00:00</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="miningProgress"></div>
+                </div>
+            </div>
+            
+            <div class="section-title">ENERGY MONITOR</div>
+            <div class="energy-monitor">
+                <div class="energy-readout">
+                    <div>
+                        <div class="energy-value" id="energyCount">0</div>
+                        <div class="energy-unit">ENERGY BLOCKS</div>
+                    </div>
+                    <div>
+                        <div class="energy-value" id="energyStatus">STABLE</div>
+                        <div class="energy-unit">STATUS</div>
+                    </div>
+                </div>
+                
+                <div class="biomedical-display">
+                    <div class="heartbeat-line"></div>
+                    <div class="pulse-dot"></div>
+                </div>
+                
+                <div class="energy-bars" id="energyBars">
+                    <!-- Energy bars will be generated here -->
+                </div>
+            </div>
+            
+            <button class="action-btn" id="startMiningBtn" onclick="startMining()">
+                START MINING
+            </button>
+        </div>
+        
+        <!-- Energy Page -->
+        <div id="energy" class="page">
+            <div class="balance-display">
+                <div class="balance-amount" id="energyCount">0</div>
+                <div class="stat-label">AVAILABLE ENERGY BLOCKS</div>
+            </div>
+            
+            <div class="section-title">WATCH ADS FOR ENERGY</div>
+            <div class="ad-container" id="adContainer">
+                <div>Click "Watch Ad" to earn 1 Energy Block (5 min mining)</div>
+            </div>
+            <button class="action-btn" onclick="watchAd()">WATCH AD (+1 ENERGY)</button>
+            
+            <div class="section-title">PURCHASE ENERGY</div>
+            <button class="action-btn" onclick="purchaseEnergy()">
+                BUY 12 ENERGY BLOCKS - $4.99
+            </button>
+            <div style="font-size: 10px; opacity: 0.7; text-align: center; margin: 10px 0;">
+                1 Hour of Mining Time
+            </div>
+            
+            <button class="action-btn" onclick="purchasePremiumEnergy()" style="background: linear-gradient(90deg, #ffaa00, #ff8800);">
+                BUY 24HR PREMIUM ENERGY - $99.99
+            </button>
+            <div style="font-size: 10px; opacity: 0.7; text-align: center; margin: 10px 0;">
+                288 Energy Blocks - Full Day Mining
+            </div>
+        </div>
+        
+        <!-- Recruit Page -->
+        <div id="recruit" class="page">
+            <div class="section-title">INVITE FRIENDS</div>
+            <div class="stat-card">
+                <div class="stat-value" id="referralCount">0</div>
+                <div class="stat-label">FRIENDS RECRUITED</div>
+            </div>
+            
+            <div class="recruit-section">
+                <div class="section-title">YOUR INVITE CODE</div>
+                <div class="invite-code" id="inviteCode">PEPE-ABC123</div>
+                <button class="action-btn" onclick="copyInviteLink()">
+                    COPY INVITE LINK
+                </button>
+                <button class="action-btn" onclick="shareToSocial()">
+                    SHARE TO SOCIAL MEDIA
+                </button>
+            </div>
+            
+            <div style="font-size: 10px; opacity: 0.8; text-align: center; margin: 20px 0;">
+                Earn 100 PEPE for each friend who joins!
+            </div>
+        </div>
+        
+        <!-- Wallet Page -->
+        <div id="wallet" class="page">
+            <div class="balance-display">
+                <div class="balance-amount" id="walletBalance">0</div>
+                <div class="stat-label">PEPE BALANCE</div>
+            </div>
+            
+            <div class="section-title">CRYPTO MARKET PRICES</div>
+            <div class="crypto-prices" id="cryptoPrices">
+                <div class="price-row">
+                    <span class="crypto-symbol">PEPE</span>
+                    <span class="crypto-price" id="pepePrice">$0.000001</span>
+                </div>
+                <div class="price-row">
+                    <span class="crypto-symbol">BTC</span>
+                    <span class="crypto-price" id="btcPrice">$45,230</span>
+                </div>
+                <div class="price-row">
+                    <span class="crypto-symbol">ETH</span>
+                    <span class="crypto-price" id="ethPrice">$2,890</span>
+                </div>
+                <div class="price-row">
+                    <span class="crypto-symbol">BNB</span>
+                    <span class="crypto-price" id="bnbPrice">$315</span>
+                </div>
+                <div class="price-row">
+                    <span class="crypto-symbol">SOL</span>
+                    <span class="crypto-price" id="solPrice">$98</span>
+                </div>
+            </div>
+            
+            <div class="section-title">WITHDRAWAL</div>
+            <div class="withdrawal-section">
+                <input type="number" class="withdrawal-input" id="withdrawalAmount" 
+                       placeholder="Enter PEPE amount to withdraw...">
+                <div class="withdrawal-info">
+                    Minimum: 500,000 PEPE ($5.00 USD)
+                </div>
+                <div class="fee-display" id="feeDisplay">
+                    Withdrawal Fee (5%): 0 PEPE
+                </div>
+                <button class="action-btn" onclick="processWithdrawal()">
+                    WITHDRAW PEPE
+                </button>
+            </div>
+            
+            <div class="section-title">CONNECT ERC20 WALLET</div>
+            <input type="text" class="wallet-input" id="walletAddress" 
+                   placeholder="Enter your ERC20 wallet address...">
+            <button class="action-btn" onclick="connectWallet()">
+                CONNECT WALLET
+            </button>
+            
+            <div class="section-title">CASH OUT OPTIONS</div>
+            <button class="action-btn" onclick="cashOut('paypal')">
+                CASH OUT TO PAYPAL
+            </button>
+            <button class="action-btn" onclick="cashOut('venmo')">
+                CASH OUT TO VENMO
+            </button>
+        </div>
+    </div>
+    
+    <div class="footer">
+        v1.0 | Powered by Blockchain Technology
+    </div>
+</div>
+
+<div class="notification" id="notification"></div>
+
+<!-- Google AdMob Integration Script -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<script>
+    // Game State
+    let gameState = {
+        totalPepe: 0,
+        energyBlocks: 0,
+        premiumEnergyBlocks: 0,
+        currentHashRate: 0,
+        isMining: false,
+        miningStartTime: null,
+        miningDuration: 300000, // 5 minutes in milliseconds
+        referralCount: 0,
+        walletConnected: false,
+        revenueGenerated: 0,
+        maxPepeRatio: 8, // 8:1 revenue to PEPE ratio
+        cryptoPrices: {
+            pepe: 0.000001,
+            btc: 45230,
+            eth: 2890,
+            bnb: 315,
+            sol: 98
+        }
+    };
+    
+    // Initialize app
+    function initApp() {
+        loadGameState();
+        updateUI();
+        generateEnergyBars();
+        generateInviteCode();
+        
+        // Add event listener for withdrawal fee calculation
+        const withdrawalInput = document.getElementById('withdrawalAmount');
+        if (withdrawalInput) {
+            withdrawalInput.addEventListener('input', updateWithdrawalFee);
+        }
+        
+        // Start mining timer if mining was active
+        if (gameState.isMining) {
+            resumeMining();
+        }
+        
+        // Update crypto prices every 30 seconds
+        setInterval(updateCryptoPrices, 30000);
+    }
+    
+    // Navigation
+    function showPage(pageId) {
+        // Hide all pages
+        document.querySelectorAll('.page').forEach(page => {
+            page.classList.remove('active');
+        });
+        
+        // Remove active class from nav buttons
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        
+        // Show selected page
+        document.getElementById(pageId).classList.add('active');
+        
+        
+        // Add active class to clicked nav button
+        event.target.classList.add('active');
+        
+        updateUI();
+    }
+    
+    // Mining Functions
+    function startMining() {
+        const totalEnergy = gameState.energyBlocks + gameState.premiumEnergyBlocks;
+        if (totalEnergy <= 0) {
+            showNotification('Need energy blocks to mine!');
+            return;
+        }
+        
+        if (gameState.isMining) {
+            showNotification('Already mining!');
+            return;
+        }
+        
+        gameState.isMining = true;
+        gameState.miningStartTime = Date.now();
+        
+        // Use premium energy first, then regular energy
+        if (gameState.premiumEnergyBlocks > 0) {
+            gameState.premiumEnergyBlocks--;
+        } else {
+            gameState.energyBlocks--;
+        }
+        
+        gameState.currentHashRate = (Math.random() * 3 + 1).toFixed(1); // 1.0-4.0 TH/s
+        
+        updateUI();
+        runMiningTimer();
+        saveGameState();
+    }
+    
+    function runMiningTimer() {
+        const miningDisplay = document.getElementById('miningDisplay');
+        const miningStatus = document.getElementById('miningStatus');
+        const miningTimer = document.getElementById('miningTimer');
+        const progressBar = document.getElementById('miningProgress');
+        const startBtn = document.getElementById('startMiningBtn');
+        const hashRateDisplay = document.getElementById('hashRate');
+        
+        miningDisplay.classList.add('mining-active');
+        startBtn.disabled = true;
+        startBtn.textContent = 'MINING IN PROGRESS...';
+        
+        const timer = setInterval(() => {
+            const elapsed = Date.now() - gameState.miningStartTime;
+            const remaining = Math.max(0, gameState.miningDuration - elapsed);
+            const progress = ((gameState.miningDuration - remaining) / gameState.miningDuration) * 100;
+            
+            // Fluctuate hash rate slightly during mining
+            if (gameState.isMining) {
+                const baseRate = parseFloat(gameState.currentHashRate);
+                const fluctuation = (Math.random() - 0.5) * 0.2; // ±0.1 TH/s fluctuation
+                const currentRate = Math.max(1.0, Math.min(4.0, baseRate + fluctuation));
+                hashRateDisplay.textContent = currentRate.toFixed(1);
+            }
+            
+            // Update timer display
+            const minutes = Math.floor(remaining / 60000);
+            const seconds = Math.floor((remaining % 60000) / 1000);
+            miningTimer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Update progress bar
+            progressBar.style.width = `${progress}%`;
+            
+            // Update status
+            miningStatus.textContent = 'MINING PEPE...';
+            
+            if (remaining <= 0) {
+                completeMining();
+                clearInterval(timer);
+            }
+        }, 100);
+    }
+    
+    function completeMining() {
+        const pepeEarned = Math.floor(Math.random() * 20) + 10; // 10-30 PEPE per mining session
+        
+        // Check revenue ratio
+        const maxAllowedPepe = gameState.revenueGenerated * gameState.maxPepeRatio;
+        const actualPepeToGive = Math.min(pepeEarned, maxAllowedPepe - gameState.totalPepe);
+        
+        gameState.totalPepe += Math.max(0, actualPepeToGive);
+        gameState.isMining = false;
+        gameState.miningStartTime = null;
+        gameState.currentHashRate = 0;
+        
+        const miningDisplay = document.getElementById('miningDisplay');
+        const miningStatus = document.getElementById('miningStatus');
+        const miningTimer = document.getElementById('miningTimer');
+        const progressBar = document.getElementById('miningProgress');
+        const startBtn = document.getElementById('startMiningBtn');
+        const hashRateDisplay = document.getElementById('hashRate');
+        
+        miningDisplay.classList.remove('mining-active');
+        miningStatus.textContent = 'MINING COMPLETE!';
+        miningTimer.textContent = '00:00';
+        progressBar.style.width = '100%';
+        startBtn.disabled = false;
+        startBtn.textContent = 'START MINING';
+        hashRateDisplay.textContent = '0.0';
+        
+        showNotification(`Mining complete! Earned ${actualPepeToGive} PEPE`);
+        updateUI();
+        saveGameState();
+        
+        // Reset progress bar after animation
+        setTimeout(() => {
+            progressBar.style.width = '0%';
+            miningStatus.textContent = 'READY TO MINE';
+        }, 2000);
+    }
+    
+    function resumeMining() {
+        if (!gameState.miningStartTime) return;
+        
+        const elapsed = Date.now() - gameState.miningStartTime;
+        if (elapsed >= gameState.miningDuration) {
+            completeMining();
+        } else {
+            runMiningTimer();
+        }
+    }
+    
+    // Energy Functions
+    function watchAd() {
+        // Simulate ad watching
+        const adContainer = document.getElementById('adContainer');
+        adContainer.innerHTML = '<div style="color: #00ffaa;">Loading Advertisement...</div>';
+        
+        // Simulate Google AdMob ad
+        setTimeout(() => {
+            adContainer.innerHTML = `
+                <div style="border: 1px dashed #00ffaa; padding: 20px;">
+                    <div>SAMPLE ADVERTISEMENT</div>
+                    <div style="font-size: 10px; margin-top: 10px;">Ad by Google AdMob</div>
+                </div>
+            `;
+            
+            // Award energy after "watching" ad
+            setTimeout(() => {
+                gameState.energyBlocks++;
+                gameState.revenueGenerated += 0.25; // Estimate $0.25 per ad view
+                showNotification('Earned 1 Energy Block!');
+                updateUI();
+                saveGameState();
+                
+                adContainer.innerHTML = '<div>Click "Watch Ad" to earn 1 Energy Block (5 min mining)</div>';
+            }, 3000);
+        }, 1000);
+    }
+    
+    function purchaseEnergy() {
+        // Simulate purchase process
+        if (confirm('Purchase 12 Energy Blocks for $4.99?')) {
+            gameState.energyBlocks += 12;
+            gameState.revenueGenerated += 4.99;
+            showNotification('Purchased 12 Energy Blocks!');
+            updateUI();
+            saveGameState();
+            
+            // In a real app, this would integrate with payment processing
+            // and send revenue to samueldparnell@gmail.com
+            console.log('Payment processed: $4.99 to samueldparnell@gmail.com');
+        }
+    }
+    
+    function purchasePremiumEnergy() {
+        // Simulate premium purchase process
+        if (confirm('Purchase 24-Hour Premium Energy for $99.99?')) {
+            gameState.premiumEnergyBlocks += 288; // 24 hours * 12 blocks per hour
+            gameState.revenueGenerated += 99.99;
+            showNotification('Purchased 24-Hour Premium Energy!');
+            updateUI();
+            saveGameState();
+            
+            console.log('Premium payment processed: $99.99 to samueldparnell@gmail.com');
+        }
+    }
+    
+    // Recruit Functions
+    function generateInviteCode() {
+        const code = 'PEPE-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+        document.getElementById('inviteCode').textContent = code;
+    }
+    
+    function copyInviteLink() {
+        const inviteCode = document.getElementById('inviteCode').textContent;
+        const inviteLink = `https://pepemining.app/invite/${inviteCode}`;
+        
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(inviteLink);
+            showNotification('Invite link copied!');
+        } else {
+            showNotification('Invite code: ' + inviteCode);
+        }
+    }
+    
+    function shareToSocial() {
+        const inviteCode = document.getElementById('inviteCode').textContent;
+        const message = `Join me in Pepe Mining Protocol! Use my invite code ${inviteCode} and we both get 100 PEPE! 🐸⛏️`;
+        
+        if (navigator.share) {
+            navigator.share({
+                title: 'Pepe Mining Protocol',
+                text: message,
+                url: `https://pepemining.app/invite/${inviteCode}`
+            });
+        } else {
+            showNotification('Share: ' + message);
+        }
+    }
+    
+    // Wallet Functions
+    // Wallet Functions
+    function processWithdrawal() {
+        const withdrawalInput = document.getElementById('withdrawalAmount');
+        const amount = parseInt(withdrawalInput.value);
+        
+        if (!amount || amount < 500000) {
+            showNotification('Minimum withdrawal: 500,000 PEPE');
+            return;
+        }
+        
+        if (amount > gameState.totalPepe) {
+            showNotification('Insufficient PEPE balance');
+            return;
+        }
+        
+        if (!gameState.walletConnected) {
+            showNotification('Please connect your wallet first');
+            return;
+        }
+        
+        const fee = Math.floor(amount * 0.05); // 5% fee
+        const netAmount = amount - fee;
+        const usdValue = (amount * gameState.cryptoPrices.pepe).toFixed(2);
+        
+        if (confirm(`Withdraw ${amount.toLocaleString()} PEPE (~$${usdValue})?\nFee: ${fee.toLocaleString()} PEPE\nNet: ${netAmount.toLocaleString()} PEPE`)) {
+            gameState.totalPepe -= amount;
+            gameState.revenueGenerated += fee * gameState.cryptoPrices.pepe; // Fee revenue
+            showNotification(`Withdrawal processed! Fee: ${fee.toLocaleString()} PEPE`);
+            withdrawalInput.value = '';
+            updateUI();
+            saveGameState();
+        }
+    }
+    
+    function updateWithdrawalFee() {
+        const withdrawalInput = document.getElementById('withdrawalAmount');
+        const feeDisplay = document.getElementById('feeDisplay');
+        const amount = parseInt(withdrawalInput.value) || 0;
+        const fee = Math.floor(amount * 0.05);
+        
+        feeDisplay.textContent = `Withdrawal Fee (5%): ${fee.toLocaleString()} PEPE`;
+    }
+    
+    function connectWallet() {
+        const walletAddress = document.getElementById('walletAddress').value;
+        if (!walletAddress || walletAddress.length < 40) {
+            showNotification('Please enter a valid ERC20 wallet address');
+            return;
+        }
+        
+        gameState.walletConnected = true;
+        showNotification('Wallet connected successfully!');
+        saveGameState();
+    }
+    
+    function cashOut(method) {
+        const minPepe = 500000;
+        if (gameState.totalPepe < minPepe) {
+            showNotification(`Minimum cashout is ${minPepe.toLocaleString()} PEPE`);
+            return;
+        }
+        
+        if (!gameState.walletConnected) {
+            showNotification('Please connect your wallet first');
+            return;
+        }
+        
+        const usdValue = (gameState.totalPepe * gameState.cryptoPrices.pepe).toFixed(2);
+        if (confirm(`Cash out ${gameState.totalPepe.toLocaleString()} PEPE (~$${usdValue}) to ${method.toUpperCase()}?`)) {
+            gameState.totalPepe = 0;
+            showNotification(`Cashout request submitted to ${method.toUpperCase()}`);
+            updateUI();
+            saveGameState();
+        }
+    }
+    
+    // UI Functions
+    function updateUI() {
+        document.getElementById('totalPepe').textContent = gameState.totalPepe.toLocaleString();
+        document.getElementById('hashRate').textContent = gameState.isMining ? 
+            (gameState.currentHashRate || '0.0') : '0.0';
+        
+        const totalEnergy = gameState.energyBlocks + gameState.premiumEnergyBlocks;
+        document.getElementById('energyCount').textContent = totalEnergy;
+        document.getElementById('walletBalance').textContent = gameState.totalPepe.toLocaleString();
+        document.getElementById('referralCount').textContent = gameState.referralCount;
+        
+        // Update energy status
+        const energyStatus = document.getElementById('energyStatus');
+        if (totalEnergy === 0) {
+            energyStatus.textContent = 'DEPLETED';
+            energyStatus.style.color = '#ff4444';
+        } else if (totalEnergy < 3) {
+            energyStatus.textContent = 'LOW';
+            energyStatus.style.color = '#ffaa00';
+        } else {
+            energyStatus.textContent = 'STABLE';
+            energyStatus.style.color = '#00ffaa';
+        }
+        
+        // Update crypto prices (simulate price fluctuations)
+        updateCryptoPrices();
+        generateEnergyBars();
+    }
+    
+    function updateCryptoPrices() {
+        // Simulate minor price fluctuations
+        const fluctuation = () => (Math.random() - 0.5) * 0.02; // ±1% fluctuation
+        
+        gameState.cryptoPrices.pepe *= (1 + fluctuation());
+        gameState.cryptoPrices.btc *= (1 + fluctuation());
+        gameState.cryptoPrices.eth *= (1 + fluctuation());
+        gameState.cryptoPrices.bnb *= (1 + fluctuation());
+        gameState.cryptoPrices.sol *= (1 + fluctuation());
+        
+        // Update price display
+        document.getElementById('pepePrice').textContent = `$${gameState.cryptoPrices.pepe.toFixed(6)}`;
+        document.getElementById('btcPrice').textContent = `$${gameState.cryptoPrices.btc.toLocaleString()}`;
+        document.getElementById('ethPrice').textContent = `$${gameState.cryptoPrices.eth.toLocaleString()}`;
+        document.getElementById('bnbPrice').textContent = `$${gameState.cryptoPrices.bnb.toFixed(0)}`;
+        document.getElementById('solPrice').textContent = `$${gameState.cryptoPrices.sol.toFixed(0)}`;
+    }
+    
+    function generateEnergyBars() {
+        const container = document.getElementById('energyBars');
+        container.innerHTML = '';
+        
+        const totalEnergy = gameState.energyBlocks + gameState.premiumEnergyBlocks;
+        
+        for (let i = 0; i < 144; i++) { // 12x12 grid = 144 bars
+            const bar = document.createElement('div');
+            bar.className = 'energy-bar';
+            
+            if (i < gameState.premiumEnergyBlocks) {
+                bar.classList.add('premium');
+            } else if (i < totalEnergy) {
+                bar.classList.add('active');
+            }
+            
+            container.appendChild(bar);
+        }
+    }
+    
+    function showNotification(message) {
+        const notification = document.getElementById('notification');
+        notification.textContent = message;
+        notification.classList.add('show');
+        
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 3000);
+    }
+    
+    // Storage Functions
+    function saveGameState() {
+        const data = JSON.stringify(gameState);
+        // Using a simple variable since localStorage is not available
+        window.pepeMiningData = data;
+    }
+    
+    function loadGameState() {
+        try {
+            if (window.pepeMiningData) {
+                const savedState = JSON.parse(window.pepeMiningData);
+                gameState = { ...gameState, ...savedState };
+            }
+        } catch (e) {
+            console.log('No saved game state found');
+        }
+    }
+    
+    // Google AdMob Integration
+    function initAdMob() {
+        // AdMob banner ad configuration
+        (adsbygoogle = window.adsbygoogle || []).push({
+            google_ad_client: "pub-9300929865305223",
+            enable_page_level_ads: true
+        });
+    }
+    
+    // Initialize app when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        initApp();
+        initAdMob();
+    });
+    
+    // Auto-save every 30 seconds
+    setInterval(saveGameState, 30000);
+</script>
+```
+
+</div>
+  <script>
+    // JavaScript logic
+  </script>
+  
+</body>
+</html>
